@@ -1,0 +1,4 @@
+#Ignore project .csproj
+*.csproj
+    
+
