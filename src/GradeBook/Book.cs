@@ -2,17 +2,30 @@ using System;
 
 namespace GradeBook
 {
+    /// <summary>
+    /// Class <c>Book</c> models a book of student grades
+    /// </summary>
     public class Book
     {
+        /// <summary>
+        /// Method <c>Book</c> constructor
+        /// </summary>
         public Book(string name)
         {
             grades = new List<double>();
             this.name = name;
         }
+        /// <summary>
+        /// Method <c>AddGrade</c> adds a grade to the book
+        /// </summary>
         public void AddGrade(double grade)
         {
             grades.Add(grade);
         }
+
+        /// <summary>
+        /// Method <c>GetStatistics</c> get Statistics class members
+        /// </summary>
         public Statistics GetStatistics()
         {
             var result =  new Statistics();
