@@ -13,7 +13,7 @@ namespace GradeBook
         public Book(string name)
         {
             grades = new List<double>();
-            this.name = name;
+            Name = name;
         }
         /// <summary>
         /// Method <c>AddGrade</c> adds a grade to the book
@@ -45,6 +45,6 @@ namespace GradeBook
         }
 
         private List<double> grades;
-        private string name;
+        public string Name;
     }
 }
