@@ -20,4 +20,30 @@ public class BookTests
         Assert.Equal(77.3, result.Low);
 
     }
+    [Fact]
+    public void CheckAddGradeRange()
+    {
+        var book = new Book("book 1");
+        book.AddGrade(105);
+        book.AddGrade(95);
+        book.AddGrade(80);
+
+        foreach (var grade in book.grades)
+        {
+            Assert.InRange(grade, 0,100);
+        }
+    }
+    [Fact]
+    public void BookSetLetterGrade()
+    {
+        var book = new Book("book 1");
+        book.AddGrade(89.1);
+        book.AddGrade(90.5);
+        book.AddGrade(77.3);
+
+        var result = book.GetStatistics();
+
+        Assert.Equal('B', result.Letter);
+
+    }
 }
