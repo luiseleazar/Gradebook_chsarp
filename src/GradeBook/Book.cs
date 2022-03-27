@@ -2,6 +2,8 @@ using System;
 
 namespace GradeBook
 {
+    public delegate void GradeAddedDelegate(object sender, EventArgs agrs);
+
     /// <summary>
     /// Class <c>Book</c> models a book of student grades
     /// </summary>
@@ -51,12 +53,18 @@ namespace GradeBook
             if(grade <= 100 && grade >= 0)
             {
                 grades.Add(grade);
+                if(GradeAdded != null)
+                {
+                    GradeAdded(this, new EventArgs());
+                }
             }
             else
             {
                 throw new ArgumentException($"Invalid {nameof(grade)}");
             }
         }
+
+        public event GradeAddedDelegate GradeAdded;
 
         /// <summary>
         /// Method <c>GetStatistics</c> get Statistics class members
