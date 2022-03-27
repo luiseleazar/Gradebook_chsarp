@@ -16,9 +16,9 @@ namespace GradeBook
             Name = name;
         }
         /// <summary>
-        /// Method <c>AddLetterGrade</c>
+        /// Method <c>AddGrade</c> add a letter grade
         /// </summary>
-        public void AddLetterGrade(char letter)
+        public void AddGrade(char letter)
         {
             switch(letter)
             {
@@ -97,7 +97,13 @@ namespace GradeBook
 
             return result;
         }
-        public List<double> grades;
-        public string Name;
+        private List<double> grades;
+
+        public string Name // Auto Property
+        {
+            get; 
+            set;
+        }
+        public const string CATEGORY = "Science";
     }
 }
