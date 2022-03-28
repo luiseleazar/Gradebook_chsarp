@@ -12,11 +12,14 @@ namespace GradeBook
         /// <summary>
         /// Method <c>Book</c> constructor
         /// </summary>
+        #pragma warning disable CS8618
         public Book(string name)
         {
             grades = new List<double>();
             Name = name;
         }
+        #pragma warning restore CS8618
+
         /// <summary>
         /// Method <c>AddGrade</c> add a letter grade
         /// </summary>
