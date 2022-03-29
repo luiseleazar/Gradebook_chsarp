@@ -8,7 +8,7 @@ public class BookTests
     [Fact]
     public void BookCalculatesAverageGrades()
     {
-        var book = new Book("");
+        var book = new InMemoryBook("");
         book.AddGrade(89.1);
         book.AddGrade(90.5);
         book.AddGrade(77.3);
@@ -40,7 +40,7 @@ public class BookTests
     [Fact]
     public void BookSetLetterGrade()
     {
-        var book = new Book("book 1");
+        var book = new InMemoryBook("book 1");
         book.AddGrade(89.1);
         book.AddGrade(90.5);
         book.AddGrade(77.3);

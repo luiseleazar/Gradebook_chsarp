@@ -5,15 +5,42 @@ namespace GradeBook
     public delegate void GradeAddedDelegate(object sender, EventArgs agrs);
 
     /// <summary>
-    /// Class <c>Book</c> models a book of student grades
+    /// Class <c>NamedObject</c> base class for named objects
     /// </summary>
-    public class Book
+    public class NamedObject
+    {
+        public NamedObject(string name)
+        {
+            Name = name;
+        }
+        public string? Name
+        {
+            get;
+            set;
+        }
+    }
+    /// <summary>
+    /// Class <c>Book</c> models a student's book (derived from NamedObject)
+    /// </summary>
+    public abstract class Book : NamedObject
+    {
+        protected Book(string name) : base(name)
+        {
+            //..
+        }
+
+        public abstract void AddGrade(double grade); 
+    }
+    /// <summary>
+    /// Class <c>InMemoryBook</c> models a book which stores data in memory (derived from Book)
+    /// </summary>
+    public class InMemoryBook : Book
     {
         /// <summary>
-        /// Method <c>Book</c> constructor
+        /// Method <c>InMemoryBook</c> constructor
         /// </summary>
         #pragma warning disable CS8618
-        public Book(string name)
+        public InMemoryBook(string name) : base(name)
         {
             grades = new List<double>();
             Name = name;
@@ -51,7 +78,7 @@ namespace GradeBook
         /// <summary>
         /// Method <c>AddGrade</c> adds a grade (in range 0-100) to the book
         /// </summary>
-        public void AddGrade(double grade)
+        public override void AddGrade(double grade)
         {
             if(grade <= 100 && grade >= 0)
             {
@@ -110,11 +137,6 @@ namespace GradeBook
         }
         private List<double> grades;
 
-        public string Name // Auto Property
-        {
-            get; 
-            set;
-        }
         public const string CATEGORY = "Science";
     }
 }
