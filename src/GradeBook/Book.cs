@@ -42,8 +42,9 @@ namespace GradeBook
         public abstract event GradeAddedDelegate GradeAdded;
         public abstract void AddGrade(double grade); //Abastract is implicit virtual
         public abstract Statistics GetStatistics();
-    }
+    }        
 
+    #pragma warning disable CS8618
     public class DiskBook : Book
     {
         public DiskBook(string name) : base(name)
@@ -82,6 +83,8 @@ namespace GradeBook
             return result;
         }
     }
+    #pragma warning restore CS8618
+
 
     /// <summary>
     /// Class <c>InMemoryBook</c> models a book which stores data in memory (derived from Book)
