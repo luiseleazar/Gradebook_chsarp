@@ -19,18 +19,70 @@ namespace GradeBook
             set;
         }
     }
+    ///<summary>
+    /// Interface <c>IBook</c>
+    ///</summary>
+    public interface IBook
+    {
+        void AddGrade(double grade);
+        Statistics GetStatistics();
+        string? Name{ get; }
+        event GradeAddedDelegate GradeAdded;   
+    }
+
     /// <summary>
     /// Class <c>Book</c> models a student's book (derived from NamedObject)
     /// </summary>
-    public abstract class Book : NamedObject
+    public abstract class Book : NamedObject, IBook
     {
         protected Book(string name) : base(name)
         {
-            //..
         }
 
-        public abstract void AddGrade(double grade); 
+        public abstract event GradeAddedDelegate GradeAdded;
+        public abstract void AddGrade(double grade); //Abastract is implicit virtual
+        public abstract Statistics GetStatistics();
     }
+
+    public class DiskBook : Book
+    {
+        public DiskBook(string name) : base(name)
+        { 
+        }
+
+        public override event GradeAddedDelegate GradeAdded;
+        public override void AddGrade(double grade)
+        {
+            //Common pattern in C# of disposable objects
+            using(var writer = File.AppendText($"{Name}.txt"))
+            {
+                writer.WriteLine(grade);
+                if(GradeAdded != null)
+                {
+                    GradeAdded(this, new EventArgs());
+                }
+            }
+            //When curly braces above are closed, the C# compiler guarantees that
+            //it will call dispose on this IDisponsable object
+        }
+        public override Statistics GetStatistics()
+        {
+            var result = new Statistics();
+            using(var reader = File.OpenText($"{Name}.txt"))
+            {
+                var line = reader.ReadLine();
+                while(line != null)
+                {
+                    var number = double.Parse(line);
+                    result.Add(number);
+                    line = reader.ReadLine();
+                }
+            }
+
+            return result;
+        }
+    }
+
     /// <summary>
     /// Class <c>InMemoryBook</c> models a book which stores data in memory (derived from Book)
     /// </summary>
@@ -94,43 +146,18 @@ namespace GradeBook
             }
         }
 
-        public event GradeAddedDelegate GradeAdded;
+        public override event GradeAddedDelegate GradeAdded;
 
         /// <summary>
         /// Method <c>GetStatistics</c> get Statistics class members
         /// </summary>
-        public Statistics GetStatistics()
+        public override Statistics GetStatistics()
         {
             var result =  new Statistics();
-            result.Average = 0.0;
-            result.High = double.MinValue;
-            result.Low = double.MaxValue;
 
-            foreach(var grade in grades)
+            for(var i = 0; i < grades.Count; i++)
             {
-                result.High = Math.Max(grade, result.High);
-                result.Low = Math.Min(grade, result.Low);
-                result.Average += grade;
-            }
-            result.Average /= grades.Count;
-
-            switch(result.Average)
-            {
-                case var d when d >= 90.0:
-                    result.Letter = 'A';
-                    break;
-                case var d when d >= 80.0:
-                    result.Letter = 'B';
-                    break;
-                case var d when d >= 70.0:
-                    result.Letter = 'C';
-                    break;
-                case var d when d >= 60.0:
-                    result.Letter = 'A';
-                    break;
-                default:
-                    result.Letter = 'F';
-                    break;
+                result.Add(grades[i]);
             }
 
             return result;
